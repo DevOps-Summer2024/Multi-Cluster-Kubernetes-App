@@ -1,0 +1,19 @@
+terraform output kube_config > c:/Users/Dino/.kube/config-terraform-aks-prometheus
+kubectl get deploy --all-namespaces
+kubectl run gm --image=dinorows/georgemichael --port=80 --replicas=2
+kubectl get deployments
+kubectl get pods
+kubectl expose deployment gm --type=LoadBalancer --name=gm-service 
+kubectl get services
+kubectl create namespace monitoring
+kubectl create -f clusterRole.yaml
+kubectl create -f config-map.yaml
+kubectl create -f prometheus-deployment.yaml --namespace=monitoring
+kubectl get deployments --all-namespaces
+kubectl create -f prometheus-service.yaml --namespace=monitoring
+kubectl create configMap foo --from-file foo.properties -o yaml --dry-run | kubectl apply -f 
+
+
+
+
+
