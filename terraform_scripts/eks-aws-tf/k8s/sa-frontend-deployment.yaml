@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sa-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sa-frontend
+  template:
+    metadata:
+      labels:
+        app: sa-frontend
+    spec:
+      containers:
+        - name: sa-frontend
+          image: ameya24/sa-frontend-finalv1
+          ports:
+            - containerPort: 80

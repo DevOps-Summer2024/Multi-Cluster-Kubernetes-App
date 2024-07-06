@@ -1,0 +1,138 @@
+AWS
+1. Create EKS Cluster
+Set up AWS CLI and IAM Role: Ensure AWS CLI is configured and you have created an IAM role for the EKS cluster.
+Create the EKS Cluster: Using AWS Console, eksctl, or Terraform.
+2. Configure kubectl for EKS
+
+terraform output kubeconfig > kubeconfig
+correct the induntation and copy to ~/.kube/config
+
+terraform output config_map_aws_auth > config-map-aws-auth.yaml
+
+correct induntation and apply
+
+3. Create Kubernetes Deployment and Service
+Deployment YAML (deployment.yaml):
+
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+4. Check Pod and Service Status
+sh
+
+kubectl get pods
+kubectl get svc
+kubectl describe svc sa-frontend-service
+kubectl logs <pod-name>
+5. Update Security Group to Allow NodePort Access
+Terraform Security Group Rule:
+
+
+Apply Terraform Changes:
+
+sh
+terraform init
+terraform apply
+6. Access the Application
+Get the external IP of the nodes:
+
+
+kubectl get nodes -o wide
+Access the application in the browser using one of the external IPs and the NodePort:
+
+
+http://<external-ip>:30002/
+7. Troubleshooting
+Pod logs:
+
+kubectl logs <pod-name>
+Describe Service:
+
+
+kubectl describe svc sa-frontend-service
+Summary
+Create and Configure EKS Cluster.
+Deploy Application using Kubernetes Deployment and Service.
+Expose Service via NodePort and Allow Access through Security Group Rules.
+Access Application using Node's External IP and NodePort.
+This cheat sheet should help you deploy and expose an application on EKS, troubleshoot issues, and ensure proper access configuration.
+
+
+
+
+
+http://3.239.217.73:30002/?webapp=http://13.73.33.203:8080
+
+
+
+http://localhost:30002/?webapp=http://localhost:30001
+
+
+Azure
+
+region: westus
+vp
+
+
+AKS Management with Azure CLI and Terraform
+1. Setting Up and Configuring AKS
+Login to Azure:
+
+az login
+Create a Resource Group:
+
+
+az group create --name myResourceGroup --location westus
+Create an AKS Cluster:
+
+
+Install kubectl via Azure CLI:
+
+az aks install-cli
+Get AKS Cluster Credentials:
+
+az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+This merges the AKS cluster context into your kubectl configuration file.
+
+Verify Cluster Connection:
+
+kubectl get nodes
+
+Add a New Config to kubectl Config List (Mac):
+
+terraform output kube_config > ~/.kube/config-terraform-aks-demo
+cp config-terraform-aks-demo ~/.kube/config-terraform-aks-demo 
+
+export KUBECONFIG=~/.kube/config-terraform-aks-demo 
+export KUBECONFIG=~/.kube/config-terraform-aks-demo:~/.kube/config
+echo "export KUBECONFIG=${KUBECONFIG}" >> ${HOME}/.bash_profile
+Add a New Config to kubectl Config List
+
+
+Deploy an Application:
+
+
+kubectl apply -f sa-logic-deployment.yaml -f sa-logic-service.yaml -f sa-webapp-deployment.yaml -f sa-webapp-service.yaml
+
+Monitor Service Creation:
+
+
+kubectl get service <name_of_your_service> --watch
+
+
+
+kubectl describe <resource>
+Print Logs from a Container:
+
+
+kubectl logs <pod_name>
+Execute Command on a Container:
+
+kubectl exec -it <pod_name> -- <command>
+These steps provide a basic reference for managing AKS using Azure CLI and kubectl, reflecting the actions performed in your lecture notes .
+
+
+
+Run application with below
+http://3.80.245.29:30002/?webapp=http://40.86.164.165:8080
+Replace first ip with nodeport ip of frontend node
+Replace second ip with LB ip of webapp service

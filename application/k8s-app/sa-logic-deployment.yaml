@@ -1,0 +1,46 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: sa-logic
+# spec:
+#   selector:
+#     matchLabels:
+#       app: sa-logic
+#   replicas: 1
+#   minReadySeconds: 15
+#   strategy:
+#     type: RollingUpdate
+#     rollingUpdate:
+#       maxUnavailable: 1
+#       maxSurge: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: sa-logic
+#     spec:
+#       containers:
+#       - image: ameya24/sa-logic-v1
+#         imagePullPolicy: Always
+#         name: sa-logic
+#         ports:
+#         - containerPort: 5000
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sa-logic-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sa-logic
+  template:
+    metadata:
+      labels:
+        app: sa-logic
+    spec:
+      containers:
+        - name: sa-logic
+          image: ameya24/sa-logic-v1
+          ports:
+            - containerPort: 5000

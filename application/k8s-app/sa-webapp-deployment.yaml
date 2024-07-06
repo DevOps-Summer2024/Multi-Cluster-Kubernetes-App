@@ -1,0 +1,52 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: sa-webapp
+# spec:
+#   selector:
+#     matchLabels:
+#       app: sa-webapp
+#   replicas: 1
+#   minReadySeconds: 15
+#   strategy:
+#     type: RollingUpdate
+#     rollingUpdate:
+#       maxUnavailable: 1
+#       maxSurge: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: sa-webapp
+#     spec:
+#       containers:
+#       - image: ameya24/sa-webapp-v1
+#         imagePullPolicy: Always
+#         name: sa-webapp
+#         env:
+#         - name: SA_LOGIC_API_URL
+#           value: "http://sa-logic-service:5000"
+#         ports:
+#         - containerPort: 8080
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sa-webapp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sa-webapp
+  template:
+    metadata:
+      labels:
+        app: sa-webapp
+    spec:
+      containers:
+        - name: sa-webapp
+          image: ameya24/sa-webapp-final
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SA_LOGIC_API_URL
+              value: "http://sa-logic-service:5000"

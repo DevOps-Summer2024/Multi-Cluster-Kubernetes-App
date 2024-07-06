@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sa-logic-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sa-logic
+  template:
+    metadata:
+      labels:
+        app: sa-logic
+    spec:
+      containers:
+        - name: sa-logic
+          image: ameya24/sa-logic-finalv1
+          ports:
+            - containerPort: 5000

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  lo:
+    build:
+      context: .
+      dockerfile: sa-logic/sa/Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      one:
+        ipv4_address: "172.18.0.2"
+
+  wa:
+    build:
+      context: .
+      dockerfile: sa-webapp/edu/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SA_LOGIC_API_URL: http://172.18.0.2:5000
+    networks:
+      one:
+        ipv4_address: "172.18.0.3"
+    depends_on:
+      - lo
+
+  fe:
+    build:
+      context: .
+      dockerfile: sa-frontend/Dockerfile
+    ports:
+      - "8085:80"
+    networks:
+      one:
+        ipv4_address: "172.18.0.4"
+    depends_on:
+      - wa
+
+networks:
+  one:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.18.0.0/16"
